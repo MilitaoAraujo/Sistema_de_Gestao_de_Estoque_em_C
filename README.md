@@ -1,2 +1,33 @@
-# Sistema-de-Gest-o-de-Estoque-em-C
-CRUD de gerenciamento de estoque em C. Projeto para a disciplina de LP1 na UEPB.
+# Sistema de Gestão de Estoque
+
+Sistema de gerenciamento de inventário desenvolvido em **C** para a disciplina de **Linguagem de Programação I**.
+
+---
+
+### Como Executar no VS Code
+
+#### 1. Via Terminal
+
+Abra o terminal do VS Code (`Ctrl + '`) e digite:
+
+```bash
+gcc main.c -o sge
+./sge
+
+```
+
+#### 2. Via Extensão
+
+1. Instale a extensão **C/C++ (Microsoft)**.
+2. No canto superior direito, clique no ícone de **Play**.
+3. Selecione o compilador **gcc** para iniciar.
+
+---
+
+### Equipe
+
+* **Militão Araujo Duarte do Rêgo**
+* **[Integrante 2]**
+* **[Integrante 3]**
+
+<p align="center">UEPB - Campina Grande/PB</p>
