@@ -27,7 +27,7 @@ gcc main.c -o sge
 ### Equipe
 
 * **Militão Araujo Duarte do Rêgo**
-* **[Integrante 2]**
-* **[Integrante 3]**
+* **Aryendrew Arnold da Silva Oliveira**
+* **Karlos Eduardo Saraiva da Silva**
 
 <p align="center">UEPB - Campina Grande/PB</p>
