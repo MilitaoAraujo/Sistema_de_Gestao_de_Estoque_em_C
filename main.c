@@ -1,27 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "produto.h"
+#include "busca.h"
+#include "editar.h"
 
-// Structures
-typedef struct Produto{ // struct dos produtos
-    int id;
-    char nome[50];
-    int quantidade;
-    float preco;
-
-    struct Produto *prox; // Endereço do próximo produto.
-
-    // Cada produto será armazenado em um endereço de memória.
-    // Cada produto guarda o endereço do próximo produto em "prox", gerando uma lista encadeada.
-    // Com isso, é possível acessar um produto através de outro, acessando o valor de "prox".
-    // O sentido da lista é de trás para frente (EX: inicio -> Produto_3 -> Produto_2 -> Produto_1 -> NULL)
-} Produto;
-
-typedef struct {
-    Produto *inicio;  // "inicio" vai apontar para o último Produto adicionado na lista. Ele vai iniciar a iteração.
-} Estoque;
-
-Produto *inicio = NULL; // A lista começa vazia, então o primeiro endereço de "inicio" é "NULL". (inicio -> NULL)
+Produto *inicio = NULL;
 
 void inicializarEstoque(Estoque *e) {};
 
@@ -140,18 +124,6 @@ void listarProdutos(Estoque *e) {
     }
 }
 
-void buscarPorNome(Estoque *e) {
-    // Usuário vai inserir um nome, e o produto vai ser exibido se o nome for encontrado
-}
-
-void buscarPorID(Estoque *e, int id) {
-    // Usuário vai inserir um ID, e o produto vai ser exibido se o ID for encontrado
-}
-
-void editarProduto(Estoque *e, int id) {
-    // Usuário vai selecionar um produto e editar a informação desejada dele
-}
-
 void analisarEstoque(Estoque *e) {
     // Serão exibidas informações gerais do estoque (quantidade de produtos cadastrados, limite do estoque etc.)
 }
@@ -183,12 +155,11 @@ int main () {
         } else if (opcao == 3) {
             listarProdutos(&var_estoque);
         } else if (opcao == 4) {
-
+            buscarPorNome(&var_estoque);
         } else if (opcao == 5) {
-
+            buscarPorID(&var_estoque, inserirID());
         } else if (opcao == 6) {
-
-        } else if (opcao == 7) {
+            editarProduto(&var_estoque, inserirID());
 
         }
     }
