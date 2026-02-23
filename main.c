@@ -52,10 +52,10 @@ char* inserirNome(char nome[]) {
     return nome;
 }
 
-int inserirPreco() {
-    int preco;
+float inserirPreco() {
+    float preco;
     printf("Insira o preço do produto: ");
-    scanf("%d", &preco);
+    scanf("%f", &preco);
     printf("\n");
     return preco;
 }
@@ -125,14 +125,63 @@ void listarProdutos(Estoque *e) {
 }
 
 void analisarEstoque(Estoque *e) {
-    // Serão exibidas informações gerais do estoque (quantidade de produtos cadastrados, limite do estoque etc.)
+    Produto *atual = inicio;
+
+    if (atual == NULL) {
+        printf("Estoque vazio.\n");
+        return;
+    }
+
+    int totalProdutos = 0;
+    int totalUnidades = 0;
+    float valorTotal = 0.0;
+
+    Produto *maiorQuantidade = atual;
+    Produto *maisCaro = atual;
+    Produto *menorQuantidade = atual;
+
+    while (atual != NULL) {
+        totalProdutos++;
+        totalUnidades += atual->quantidade;
+        valorTotal += atual->quantidade * atual->preco;
+
+        if (atual->quantidade > maiorQuantidade->quantidade) {
+            maiorQuantidade = atual;
+        }
+
+        if (atual->preco > maisCaro->preco) {
+            maisCaro = atual;
+        }
+
+        if (atual->quantidade < menorQuantidade->quantidade) {
+            menorQuantidade = atual;
+        }
+
+        atual = atual->prox;
+    }
+
+    printf("===== ANALISE DO ESTOQUE =====\n");
+    printf("Total de produtos cadastrados: %d\n", totalProdutos);
+    printf("Total de unidades no estoque: %d\n", totalUnidades);
+    printf("Valor total do estoque: R$ %.2f\n\n", valorTotal);
+
+    printf("Produto com maior quantidade: %s (%d unidades)\n",
+           maiorQuantidade->nome, maiorQuantidade->quantidade);
+
+    printf("Produto mais caro: %s (R$ %.2f)\n",
+           maisCaro->nome, maisCaro->preco);
+
+    printf("Produto com menor quantidade: %s (%d unidades)\n",
+           menorQuantidade->nome, menorQuantidade->quantidade);
+
+    printf("\n");
 }
 
 int main () {
     Estoque var_estoque;
     inicializarEstoque(&var_estoque);
 
-    int opcao;
+    int opcao = -1;
 
     while (opcao != 0) {
         printf("| | |  | MENU |  | | |\n");
@@ -160,7 +209,12 @@ int main () {
             buscarPorID(&var_estoque, inserirID());
         } else if (opcao == 6) {
             editarProduto(&var_estoque, inserirID());
-
+        } else if (opcao == 7) {
+            analisarEstoque(&var_estoque);
+        } else if (opcao == 0) {
+            printf("Encerrando programa...\n");
+        } else {
+            printf("Opção inválida. Tente novamente.\n");
         }
     }
 
