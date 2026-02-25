@@ -27,7 +27,7 @@ void editarProduto(Estoque *e, int id) {
             
             if (opcao == 1) {
                 printf("Novo nome: ");
-                scanf("%s", atual->nome);
+                scanf(" %[^\n]", atual->nome);
                 printf("Nome atualizado com sucesso.\n");
             } else if (opcao == 2) {
                 printf("Nova quantidade: ");

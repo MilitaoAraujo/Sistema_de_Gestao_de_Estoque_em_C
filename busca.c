@@ -7,7 +7,7 @@ void buscarPorNome(Estoque *e) {
     int encontrado = 0;
     
     printf("Digite o nome do produto: ");
-    scanf("%s", nomeBusca);
+    scanf(" %[^\n]", nomeBusca);
     printf("\n");
     
     Produto *atual = inicio;

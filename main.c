@@ -30,46 +30,90 @@ void adicionarProduto(Produto *novo) {
 }
 
 int inserirID() {
-    int id;
-    printf("Insira o ID do produto: ");
-    scanf("%d", &id);
-    while (id < 0) {
-        printf("ID inválido. Insira o ID do produto novamente: ");
-        scanf("%d", &id);
+    char entrada[50];
+    char *fim;
+    long id;
+
+    while (1) {
+        printf("Insira o ID do produto: ");
+        scanf(" %[^\n]", entrada);
+
+        id = strtol(entrada, &fim, 10);
+
+        // Verifica se é inteiro válido
+        if (*fim != '\0') {
+            printf("ID invalido. Digite apenas numeros inteiros.\n");
+            continue;
+        }
+
+        // Verifica se é positivo
+        if (id <= 0) {
+            printf("O ID deve ser um numero inteiro positivo.\n");
+            continue;
+        }
+
+        return (int)id;
     }
-    printf("\n");
-    return id;
 }
 
 int inserirQuantidade() {
-    int quant;
-    printf("Insira a quantidade de unidades do produto: ");
-    scanf("%d", &quant);
-    while (quant < 0) {
-        printf("Quantidade inválida. Insira a quantidade de unidades do produto novamente: ");
-        scanf("%d", &quant);
+    char entrada[50];
+    char *fim;
+    long quant;
+
+    while (1) {
+        printf("Insira a quantidade de unidades do produto: ");
+        scanf(" %[^\n]", entrada);
+
+        quant = strtol(entrada, &fim, 10);
+
+        // Verifica se é inteiro válido
+        if (*fim != '\0') {
+            printf("Quantidade invalida. Digite apenas numeros inteiros.\n");
+            continue;
+        }
+
+        // Verifica se é positivo
+        if (quant <= 0) {
+            printf("A quantidade deve ser um numero inteiro positivo.\n");
+            continue;
+        }
+
+        return (int)quant;
     }
-    printf("\n");
-    return quant;
 }
 
 char* inserirNome(char nome[]) {
     printf("Insira o nome do produto: ");
-    scanf("%s", nome);
-    printf("\n");
+    scanf(" %[^\n]", nome);
     return nome;
 }
 
 float inserirPreco() {
+    char entrada[50];
+    char *fim;
     float preco;
-    printf("Insira o preço do produto: ");
-    scanf("%f", &preco);
-    while (preco < 0) {
-        printf("Preço inválido. Insira o preço do produto novamente: ");
-        scanf("%f", &preco);
+
+    while (1) {
+        printf("Insira o preco do produto: ");
+        scanf(" %[^\n]", entrada);
+
+        preco = strtof(entrada, &fim);
+
+        // Verifica se é número válido
+        if (*fim != '\0') {
+            printf("Preco invalida. Digite apenas numeros.\n");
+            continue;
+        }
+
+        // Verifica se é positivo
+        if (preco <= 0) {
+            printf("O preco deve ser um numero positivo.\n");
+            continue;
+        }
+
+        return preco;
     }
-    printf("\n");
-    return preco;
 }
 
 int idJaExiste(int id) {
