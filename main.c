@@ -41,6 +41,10 @@ int inserirQuantidade() {
     int quant;
     printf("Insira a quantidade de unidades do produto: ");
     scanf("%d", &quant);
+    while (quant < 0) {
+        printf("Quantidade inválida. Insira a quantidade de unidades do produto novamente: ");
+        scanf("%d", &quant);
+    }
     printf("\n");
     return quant;
 }
@@ -56,6 +60,10 @@ float inserirPreco() {
     float preco;
     printf("Insira o preço do produto: ");
     scanf("%f", &preco);
+    while (preco < 0) {
+        printf("Preço inválido. Insira o preço do produto novamente: ");
+        scanf("%f", &preco);
+    }
     printf("\n");
     return preco;
 }
