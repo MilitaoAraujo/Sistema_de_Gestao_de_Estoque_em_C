@@ -33,6 +33,10 @@ int inserirID() {
     int id;
     printf("Insira o ID do produto: ");
     scanf("%d", &id);
+    while (id < 0) {
+        printf("ID inválido. Insira o ID do produto novamente: ");
+        scanf("%d", &id);
+    }
     printf("\n");
     return id;
 }
@@ -68,12 +72,48 @@ float inserirPreco() {
     return preco;
 }
 
+int idJaExiste(int id) {
+    Produto *atual = inicio;
+
+    while (atual != NULL) {
+        if (atual->id == id) {
+            return 1; // ID já existe
+        }
+        atual = atual->prox;
+    }
+
+    return 0; // ID não existe
+}
+
+int nomeJaExiste(char nome[]) {
+    Produto *atual = inicio;
+
+    while (atual != NULL) {
+        if (strcmp(atual->nome, nome) == 0) {
+            return 1; // Nome já existe
+        }
+        atual = atual->prox;
+    }
+
+    return 0; // Nome não existe
+}
+
 // Funções do Menu:
 void cadastrarProduto() {
     int id = inserirID();
 
+    if (idJaExiste(id)) {
+        printf("Erro: Já existe um produto com esse ID.\n\n");
+        return;
+    }
+    
     char nome[50];
     inserirNome(nome);
+
+    if (nomeJaExiste(nome)) {
+        printf("Erro: Já existe um produto com esse nome.\n\n");
+        return;
+    }
 
     int quantidade = inserirQuantidade();
 

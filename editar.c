@@ -32,10 +32,18 @@ void editarProduto(Estoque *e, int id) {
             } else if (opcao == 2) {
                 printf("Nova quantidade: ");
                 scanf("%d", &atual->quantidade);
+                while (atual->quantidade < 0) {
+                    printf("Quantidade inválida. Insira a quantidade de unidades do produto novamente: ");
+                    scanf("%d", &atual->quantidade);
+                }
                 printf("Quantidade atualizada com sucesso.\n");
             } else if (opcao == 3) {
                 printf("Novo preco: ");
                 scanf("%f", &atual->preco);
+                while (atual->preco < 0) {
+                    printf("Preço inválido. Insira o preço do produto novamente: ");
+                    scanf("%f", &atual->preco);
+                }
                 printf("Preco atualizado com sucesso.\n");
             } else {
                 printf("Edicao cancelada.\n");
