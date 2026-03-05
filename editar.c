@@ -4,7 +4,7 @@ extern Produto *inicio;
 
 /* Função para editar os dados de um produto */
 /* Busca o produto pelo ID, exibe menu de opções e permite alterar nome, quantidade ou preço */
-/* Valida os valores de quantidade e preço para não允许 valores negativos */
+/* Valida os valores de quantidade e preço para não valores negativos */
 void editarProduto(Estoque *e, int id) {
     Produto *atual = inicio;
     int encontrado = 0;
