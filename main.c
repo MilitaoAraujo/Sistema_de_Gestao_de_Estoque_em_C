@@ -1,27 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "produto.h"
+#include "busca.h"
+#include "editar.h"
 
-// Structures
-typedef struct Produto{ // struct dos produtos
-    int id;
-    char nome[50];
-    int quantidade;
-    float preco;
-
-    struct Produto *prox; // Endereço do próximo produto.
-
-    // Cada produto será armazenado em um endereço de memória.
-    // Cada produto guarda o endereço do próximo produto em "prox", gerando uma lista encadeada.
-    // Com isso, é possível acessar um produto através de outro, acessando o valor de "prox".
-    // O sentido da lista é de trás para frente (EX: inicio -> Produto_3 -> Produto_2 -> Produto_1 -> NULL)
-} Produto;
-
-typedef struct {
-    Produto *inicio;  // "inicio" vai apontar para o último Produto adicionado na lista. Ele vai iniciar a iteração.
-} Estoque;
-
-Produto *inicio = NULL; // A lista começa vazia, então o primeiro endereço de "inicio" é "NULL". (inicio -> NULL)
+Produto *inicio = NULL;
 
 void inicializarEstoque(Estoque *e) {};
 
@@ -46,42 +30,134 @@ void adicionarProduto(Produto *novo) {
 }
 
 int inserirID() {
-    int id;
-    printf("Insira o ID do produto: ");
-    scanf("%d", &id);
-    printf("\n");
-    return id;
+    char entrada[50];
+    char *fim;
+    long id;
+
+    while (1) {
+        printf("Insira o ID do produto: ");
+        scanf(" %[^\n]", entrada);
+
+        id = strtol(entrada, &fim, 10);
+
+        // Verifica se é inteiro válido
+        if (*fim != '\0') {
+            printf("ID invalido. Digite apenas numeros inteiros.\n");
+            continue;
+        }
+
+        // Verifica se é positivo
+        if (id <= 0) {
+            printf("O ID deve ser um numero inteiro positivo.\n");
+            continue;
+        }
+
+        return (int)id;
+    }
 }
 
 int inserirQuantidade() {
-    int quant;
-    printf("Insira a quantidade de unidades do produto: ");
-    scanf("%d", &quant);
-    printf("\n");
-    return quant;
+    char entrada[50];
+    char *fim;
+    long quant;
+
+    while (1) {
+        printf("Insira a quantidade de unidades do produto: ");
+        scanf(" %[^\n]", entrada);
+
+        quant = strtol(entrada, &fim, 10);
+
+        // Verifica se é inteiro válido
+        if (*fim != '\0') {
+            printf("Quantidade invalida. Digite apenas numeros inteiros.\n");
+            continue;
+        }
+
+        // Verifica se é positivo
+        if (quant <= 0) {
+            printf("A quantidade deve ser um numero inteiro positivo.\n");
+            continue;
+        }
+
+        return (int)quant;
+    }
 }
 
 char* inserirNome(char nome[]) {
     printf("Insira o nome do produto: ");
-    scanf("%s", nome);
-    printf("\n");
+    scanf(" %[^\n]", nome);
     return nome;
 }
 
-int inserirPreco() {
-    int preco;
-    printf("Insira o preço do produto: ");
-    scanf("%d", &preco);
-    printf("\n");
-    return preco;
+float inserirPreco() {
+    char entrada[50];
+    char *fim;
+    float preco;
+
+    while (1) {
+        printf("Insira o preco do produto: ");
+        scanf(" %[^\n]", entrada);
+
+        preco = strtof(entrada, &fim);
+
+        // Verifica se é número válido
+        if (*fim != '\0') {
+            printf("Preco invalida. Digite apenas numeros.\n");
+            continue;
+        }
+
+        // Verifica se é positivo
+        if (preco <= 0) {
+            printf("O preco deve ser um numero positivo.\n");
+            continue;
+        }
+
+        return preco;
+    }
+}
+
+int idJaExiste(int id) {
+    Produto *atual = inicio;
+
+    while (atual != NULL) {
+        if (atual->id == id) {
+            return 1; // ID já existe
+        }
+        atual = atual->prox;
+    }
+
+    return 0; // ID não existe
+}
+
+int nomeJaExiste(char nome[]) {
+    Produto *atual = inicio;
+
+    while (atual != NULL) {
+        if (strcmp(atual->nome, nome) == 0) {
+            return 1; // Nome já existe
+        }
+        atual = atual->prox;
+    }
+
+    return 0; // Nome não existe
 }
 
 // Funções do Menu:
 void cadastrarProduto() {
     int id = inserirID();
 
+    if (idJaExiste(id)) {
+        printf("Erro: Já existe um produto com esse ID.\n\n");
+        return;
+    }
+    
     char nome[50];
     inserirNome(nome);
+
+    if (nomeJaExiste(nome)) {
+        printf("Erro: Já existe um produto com esse nome.\n\n");
+        return;
+    }
 
     int quantidade = inserirQuantidade();
 
@@ -140,27 +216,64 @@ void listarProdutos(Estoque *e) {
     }
 }
 
-void buscarPorNome(Estoque *e) {
-    // Usuário vai inserir um nome, e o produto vai ser exibido se o nome for encontrado
-}
-
-void buscarPorID(Estoque *e, int id) {
-    // Usuário vai inserir um ID, e o produto vai ser exibido se o ID for encontrado
-}
-
-void editarProduto(Estoque *e, int id) {
-    // Usuário vai selecionar um produto e editar a informação desejada dele
-}
-
 void analisarEstoque(Estoque *e) {
-    // Serão exibidas informações gerais do estoque (quantidade de produtos cadastrados, limite do estoque etc.)
+    Produto *atual = inicio;
+
+    if (atual == NULL) {
+        printf("Estoque vazio.\n");
+        return;
+    }
+
+    int totalProdutos = 0;
+    int totalUnidades = 0;
+    float valorTotal = 0.0;
+
+    Produto *maiorQuantidade = atual;
+    Produto *maisCaro = atual;
+    Produto *menorQuantidade = atual;
+
+    while (atual != NULL) {
+        totalProdutos++;
+        totalUnidades += atual->quantidade;
+        valorTotal += atual->quantidade * atual->preco;
+
+        if (atual->quantidade > maiorQuantidade->quantidade) {
+            maiorQuantidade = atual;
+        }
+
+        if (atual->preco > maisCaro->preco) {
+            maisCaro = atual;
+        }
+
+        if (atual->quantidade < menorQuantidade->quantidade) {
+            menorQuantidade = atual;
+        }
+
+        atual = atual->prox;
+    }
+
+    printf("===== ANALISE DO ESTOQUE =====\n");
+    printf("Total de produtos cadastrados: %d\n", totalProdutos);
+    printf("Total de unidades no estoque: %d\n", totalUnidades);
+    printf("Valor total do estoque: R$ %.2f\n\n", valorTotal);
+
+    printf("Produto com maior quantidade: %s (%d unidades)\n",
+           maiorQuantidade->nome, maiorQuantidade->quantidade);
+
+    printf("Produto mais caro: %s (R$ %.2f)\n",
+           maisCaro->nome, maisCaro->preco);
+
+    printf("Produto com menor quantidade: %s (%d unidades)\n",
+           menorQuantidade->nome, menorQuantidade->quantidade);
+
+    printf("\n");
 }
 
 int main () {
     Estoque var_estoque;
     inicializarEstoque(&var_estoque);
 
-    int opcao;
+    int opcao = -1;
 
     while (opcao != 0) {
         printf("| | |  | MENU |  | | |\n");
@@ -183,13 +296,17 @@ int main () {
         } else if (opcao == 3) {
             listarProdutos(&var_estoque);
         } else if (opcao == 4) {
-
+            buscarPorNome(&var_estoque);
         } else if (opcao == 5) {
-
+            buscarPorID(&var_estoque, inserirID());
         } else if (opcao == 6) {
-
+            editarProduto(&var_estoque, inserirID());
         } else if (opcao == 7) {
-
+            analisarEstoque(&var_estoque);
+        } else if (opcao == 0) {
+            printf("Encerrando programa...\n");
+        } else {
+            printf("Opção inválida. Tente novamente.\n");
         }
     }
 
