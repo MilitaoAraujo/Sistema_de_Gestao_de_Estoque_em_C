@@ -206,14 +206,18 @@ void listarProdutos(Estoque *e) {
         return;
     }
 
+    printf("\n--- LISTA DE PRODUTOS (ORDENADA POR ID) ---\n");
     while(atual != NULL) {
         printf("ID: %d\n", atual->id);
         printf("Nome: %s\n", atual->nome);
         printf("Quantidade: %d\n", atual->quantidade);
         printf("Preco: %.2f\n\n", atual->preco);
 
-        atual = atual->prox;
+        // Como a inserção agora é ordenada, o 'prox' sempre 
+        // levará ao próximo ID em ordem crescente.
+        atual = atual->prox; 
     }
+    printf("------------------------------------------\n");
 }
 
 void analisarEstoque(Estoque *e) {
