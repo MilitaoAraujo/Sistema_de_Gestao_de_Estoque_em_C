@@ -10,11 +10,9 @@ Produto *inicio = NULL;
 void inicializarEstoque(Estoque *e) {};
 
 // Ferramentas:
-Produto* criaProduto(int id, char nome[], int quantidade, float preco) { // cria um produto novo na memória.
+Produto* criaProduto(int id, char nome[], int quantidade, float preco) {
     Produto *novo = (Produto*) malloc(sizeof(Produto));
-    // a função "malloc" aloca o espaço na memória para salvar o novo produto.
-    // "(sizeof(Produto))" faz o malloc alocar o espaço exato necessário para a adição. 
-    // "novo" guarda o endereço de memória do novo produto.
+
     novo->id = id;
     strcpy(novo->nome, nome);
     novo->quantidade = quantidade;
@@ -25,8 +23,23 @@ Produto* criaProduto(int id, char nome[], int quantidade, float preco) { // cria
 };
 
 void adicionarProduto(Produto *novo) {
-    novo->prox = inicio; // "prox" do novo produto será o endereço salvo em "inicio", que é o endereço do último produto adicionado.
-    inicio = novo; // Agora, inicio aponta para o novo produto.
+
+    Produto *atual = inicio;
+    Produto *anterior = NULL;
+
+    while (atual != NULL && atual->id < novo->id) {
+        anterior = atual;
+        atual = atual->prox;
+    }
+
+    if (anterior == NULL) {
+        novo->prox = inicio;
+        inicio = novo;
+    } 
+    else {
+        anterior->prox = novo;
+        novo->prox = atual;
+    }
 }
 
 int inserirID() {
@@ -40,15 +53,13 @@ int inserirID() {
 
         id = strtol(entrada, &fim, 10);
 
-        // Verifica se é inteiro válido
         if (*fim != '\0') {
             printf("ID invalido. Digite apenas numeros inteiros.\n");
             continue;
         }
 
-        // Verifica se é positivo
         if (id <= 0) {
-            printf("O ID deve ser um numero inteiro positivo.\n");
+            printf("O ID deve ser um numero positivo.\n");
             continue;
         }
 
@@ -67,13 +78,11 @@ int inserirQuantidade() {
 
         quant = strtol(entrada, &fim, 10);
 
-        // Verifica se é inteiro válido
         if (*fim != '\0') {
             printf("Quantidade invalida. Digite apenas numeros inteiros.\n");
             continue;
         }
 
-        // Verifica se é positivo
         if (quant <= 0) {
             printf("A quantidade deve ser um numero inteiro positivo.\n");
             continue;
@@ -100,13 +109,11 @@ float inserirPreco() {
 
         preco = strtof(entrada, &fim);
 
-        // Verifica se é número válido
         if (*fim != '\0') {
             printf("Preco invalida. Digite apenas numeros.\n");
             continue;
         }
 
-        // Verifica se é positivo
         if (preco <= 0) {
             printf("O preco deve ser um numero positivo.\n");
             continue;
@@ -121,12 +128,12 @@ int idJaExiste(int id) {
 
     while (atual != NULL) {
         if (atual->id == id) {
-            return 1; // ID já existe
+            return 1;
         }
         atual = atual->prox;
     }
 
-    return 0; // ID não existe
+    return 0;
 }
 
 int nomeJaExiste(char nome[]) {
@@ -134,12 +141,12 @@ int nomeJaExiste(char nome[]) {
 
     while (atual != NULL) {
         if (strcmp(atual->nome, nome) == 0) {
-            return 1; // Nome já existe
+            return 1;
         }
         atual = atual->prox;
     }
 
-    return 0; // Nome não existe
+    return 0;
 }
 
 // Funções do Menu:
@@ -169,31 +176,28 @@ void cadastrarProduto() {
     printf("Produto adicionado com sucesso.\n");
 }
 
-
 void removerProduto(Estoque *e, int id) {
     Produto *atual = inicio;
     Produto *anterior = NULL;
 
-    while (atual != NULL && atual->id != id) { // anda casas enquanto não encontrar o ID correto
+    while (atual != NULL && atual->id != id) {
         anterior = atual;
         atual = atual->prox;
     }
 
-    // Caso percorra a lista até chegar no NULL:
     if (atual == NULL) {
         printf("Produto nao encontrado.\n");
         return;
     }
 
-    // Caso o primeiro elemento seja o elemento a ser removido (o que inicio aponta):
     if (anterior == NULL) {
-        inicio = atual->prox; // inicio -> NULL
+        inicio = atual->prox;
     }
-    else { // Caso seja do 2º elemento para frente:
-        anterior->prox = atual->prox; // substitui o "prox" do elemento anterior ao que será removido.
+    else {
+        anterior->prox = atual->prox;
     }
 
-    free(atual); // libera o endereço de memória do item selecionado, removendo-o
+    free(atual);
 
     printf("Produto removido com sucesso.\n");
 }
@@ -206,15 +210,13 @@ void listarProdutos(Estoque *e) {
         return;
     }
 
-    printf("\n--- LISTA DE PRODUTOS (ORDENADA POR ID) ---\n");
+    printf("\n--- LISTA DE PRODUTOS ---\n");
     while(atual != NULL) {
         printf("ID: %d\n", atual->id);
         printf("Nome: %s\n", atual->nome);
         printf("Quantidade: %d\n", atual->quantidade);
         printf("Preco: %.2f\n\n", atual->preco);
 
-        // Como a inserção agora é ordenada, o 'prox' sempre 
-        // levará ao próximo ID em ordem crescente.
         atual = atual->prox; 
     }
     printf("------------------------------------------\n");
@@ -293,6 +295,7 @@ int main () {
 
         scanf("%d", &opcao);
         printf("\n");
+
         if (opcao == 1) {
             cadastrarProduto();
         } else if (opcao == 2) {
