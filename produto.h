@@ -1,21 +1,15 @@
 #ifndef PRODUTO_H
 #define PRODUTO_H
-
-/* * Eu usei as guardas de inclusão #ifndef e #define para garantir que 
- * essa biblioteca seja incluída apenas uma vez durante a compilação, 
- * evitando erros de redefinição de structs
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 /* Estrutura que representa um produto no estoque */
 typedef struct Produto {
-    int id;
-    char nome[50];
-    int quantidade;
-    float preco;
+    int id;// Espaço para o código numérico do produto.
+    char nome[50];// Vetor de caracteres para armazenar o nome.
+    int quantidade;// Espaço para a quantidade em estoque.
+    float preco;// Espaço para o valor monetário.
     
     /* * Aqui eu criei o ponteiro prox, Ele guarda o endereço do próximo 
      * produto na memória, gerando a nossa lista encadeada

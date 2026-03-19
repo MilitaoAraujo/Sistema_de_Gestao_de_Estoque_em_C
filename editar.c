@@ -6,13 +6,13 @@ extern Produto *inicio;
 /* Função para editar os dados de um produto */
 /* Busca o produto pelo ID, exibe menu de opções e permite alterar nome, quantidade ou preço */
 void editarProduto(Estoque *e, int id) {
-    Produto *atual = inicio;
+    Produto *atual = inicio; // Ponteiro auxiliar para localizar o alvo.
     int encontrado = 0;
     int opcao;
     
     // bloco iterativo para achar o nó exato que o usuário quer alterar
-    while (atual != NULL) {
-        if (atual->id == id) {
+    while (atual != NULL) { // Percorre a lista em busca do ID informado.
+        if (atual->id == id) {// Se encontrar o nó com o ID correto
             printf("=== Produto Encontrado ===\n");
             printf("ID: %d\n", atual->id);
             printf("Nome: %s\n", atual->nome);
@@ -26,7 +26,7 @@ void editarProduto(Estoque *e, int id) {
             printf("3. Preco\n");
             printf("0. Cancelar\n");
             printf("Escolha uma opção: ");
-            scanf("%d", &opcao);
+            scanf("%d", &opcao); // Lê a escolha do usuário.
             printf("\n");
             
             /*
@@ -36,21 +36,20 @@ void editarProduto(Estoque *e, int id) {
              */
             if (opcao == 1) {
                 printf("Novo nome: ");
-                scanf(" %[^\n]", atual->nome);
+                scanf(" %[^\n]", atual->nome);// Lê a escolha do usuário.
                 printf("Nome atualizado com sucesso.\n");
             } else if (opcao == 2) {
                 printf("Nova quantidade: ");
-                scanf("%d", &atual->quantidade);
-                
+                scanf("%d", &atual->quantidade);// Lê a escolha do usuário.
                 // loop de validação para impedir entrada de valores negativos
                 while (atual->quantidade < 0) {
                     printf("Quantidade inválida. Insira a quantidade de unidades do produto novamente: ");
-                    scanf("%d", &atual->quantidade);
+                    scanf("%d", &atual->quantidade);// Lê a escolha do usuário.
                 }
                 printf("Quantidade atualizada com sucesso.\n");
             } else if (opcao == 3) {
                 printf("Novo preco: ");
-                scanf("%f", &atual->preco);
+                scanf("%f", &atual->preco);// Lê a escolha do usuário.
                 
                 // mesma lógica de validação aqui para proteger a integridade do preço
                 while (atual->preco < 0) {
