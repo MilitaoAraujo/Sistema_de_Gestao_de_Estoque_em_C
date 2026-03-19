@@ -1,15 +1,16 @@
 #include "editar.h"
 
+// Eu uso o 'extern' de novo para ter acesso à lista encadeada original
 extern Produto *inicio;
 
 /* Função para editar os dados de um produto */
 /* Busca o produto pelo ID, exibe menu de opções e permite alterar nome, quantidade ou preço */
-/* Valida os valores de quantidade e preço para não valores negativos */
 void editarProduto(Estoque *e, int id) {
     Produto *atual = inicio;
     int encontrado = 0;
     int opcao;
     
+    // bloco iterativo para achar o nó exato que o usuário quer alterar
     while (atual != NULL) {
         if (atual->id == id) {
             printf("=== Produto Encontrado ===\n");
@@ -28,6 +29,11 @@ void editarProduto(Estoque *e, int id) {
             scanf("%d", &opcao);
             printf("\n");
             
+            /*
+             * como 'atual' aponta para o endereço real do produto na 
+             * memória Heap, qualquer scanf que eu fizer no
+             * ->campo vai modificar o dado real e permanente
+             */
             if (opcao == 1) {
                 printf("Novo nome: ");
                 scanf(" %[^\n]", atual->nome);
@@ -35,6 +41,8 @@ void editarProduto(Estoque *e, int id) {
             } else if (opcao == 2) {
                 printf("Nova quantidade: ");
                 scanf("%d", &atual->quantidade);
+                
+                // loop de validação para impedir entrada de valores negativos
                 while (atual->quantidade < 0) {
                     printf("Quantidade inválida. Insira a quantidade de unidades do produto novamente: ");
                     scanf("%d", &atual->quantidade);
@@ -43,6 +51,8 @@ void editarProduto(Estoque *e, int id) {
             } else if (opcao == 3) {
                 printf("Novo preco: ");
                 scanf("%f", &atual->preco);
+                
+                // mesma lógica de validação aqui para proteger a integridade do preço
                 while (atual->preco < 0) {
                     printf("Preço inválido. Insira o preço do produto novamente: ");
                     scanf("%f", &atual->preco);
@@ -51,9 +61,9 @@ void editarProduto(Estoque *e, int id) {
             } else {
                 printf("Edicao cancelada.\n");
             }
-            break;
+            break; //encerra a busca para poupar a CPU
         }
-        atual = atual->prox;
+        atual = atual->prox; // Continua a travessia se ainda não encontrou
     }
     
     if (!encontrado) {

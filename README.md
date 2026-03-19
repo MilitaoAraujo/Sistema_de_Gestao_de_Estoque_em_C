@@ -41,6 +41,7 @@ gcc main.c busca.c editar.c -o programa ; .\programa
 3. Selecione o compilador **gcc** para iniciar
 
 > **Nota**: Ao executar via extensão, configure o tasks.json para compilar todos os arquivos juntos (`main.c busca.c editar.c`).
+ **Nota**: Devido a problemas em rodar o codigo em C no vscode é altamente recomendavel rodar o programa no OnlineGDB.
 
 ---
 
